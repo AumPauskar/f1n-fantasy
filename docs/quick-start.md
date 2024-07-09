@@ -51,3 +51,62 @@
     ```bash
     sudo docker exec -it f1mongo mongosh
     ```
+
+## Testing API routes
+1. Database connection testing
+    - Route: `/test`
+    - Method: `GET`
+    - Expected output: Successfully connected to MongoDB
+    - Unsuccessful output: Internal server error
+    - Example: `http://localhost:5000/test`
+2. Adding new users
+    - Route: `/api/v1/createusers`
+    - Method: `POST`
+    - Body: json
+        ```json
+        {
+        "name": "John Doe",
+        "passwd": "123"
+        }
+        ```
+    - Expected output: User created
+    - Unsuccessful output: 
+    - Example: `http://localhost:5000/api/v1/getusers`
+3. Getting all users
+    - Route: `/api/v1/getusers`
+    - Method: `GET`
+    - Body: json
+        ```json
+        {
+        "name": "root",
+        "passwd": "root"
+        }
+        ```
+    - Expected output: List of all users
+        ```json
+        [
+            {
+                "name": "root",
+                "passwd": "passed"
+            }
+        ]
+        ```
+    - Unsuccessful output: Internal server error
+    - Example: `http://localhost:5000/api/v1/getusers`
+4. Adding race round details
+    - Route: `/api/v1/addraceresults`
+    - Method: `POST`
+    - Body: json
+        ```json
+        {
+            "name": "root",
+            "passwd": "rot",
+            "rd": 10,
+            "results": [63, 81, 55, 44, 1, 27, 11, 20, 3, 10],
+            "dnf": []
+        }
+        ```
+        **Note:** DNF can be an empty array or may be a populated array
+    - Expected: `added`
+    - Unsuccessful output: Internal server error (500), unauthorized (401), round already exists (409)
+    - Example: `http://localhost:5000/api/v1/addraceresult`

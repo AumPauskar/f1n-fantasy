@@ -85,15 +85,56 @@ app.post("/api/v1/addraceresults", async (req, res) => {
     if (name !== "root" || passwd !== "root") {
         return res.status(401).send("Unauthorized");
     }
-    // if the round already exists I NEED TO ADD THIS IMMIDEATELY!!!
+    // if the round already exists
     let db;
-    // adding data to the database
-    console.log("name", name);
-    console.log("passwd", passwd);
-    console.log("rd", rd);
-    console.log("results", results);
-    console.log("dnf", dnf);
-    return res.status(200).send("added");
+    // search for matches in the database for rd
+    try {
+        db = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+        const dbo = db.db("f1mongo"); // Database name
+
+        const result = await dbo.collection("results").find({ rd: rd }).toArray();
+        if (result.length > 0) {
+            return res.status(409).send("Round already exists");
+        }
+    } catch (err) {
+        console.error("Error", err);
+        res.status(500).send("Internal server error");
+    } finally {
+        if (db) {
+            await db.close();
+        }
+    }
+    // if the round does not exist
+    // adding data to the database -> collections results
+    try {
+        db = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+        const dbo = db.db("f1mongo"); // Database name
+
+        const query = { rd: rd }; // Query to find the document to update
+        const update = { $set: { rd: rd, results: results, dnf: dnf } }; // Update command
+        const options = { upsert: true }; // Option to insert if document doesn't exist
+
+        const result = await dbo.collection("results").updateOne(query, update, options);
+
+        if (result.upsertedCount > 0) {
+            console.log("name", name);
+            console.log("passwd", passwd);
+            console.log("rd", rd);
+            console.log("results", results);
+            console.log("dnf", dnf);
+            return res.status(200).send("Results added");
+        } else if (result.modifiedCount > 0) {
+            return res.status(200).send("Results updated");
+        }
+    } catch (err) {
+        console.error("Error", err);
+        res.status(500).send("Internal server error");
+    } finally {
+        if (db) {
+            await db.close();
+        }
+    }
+
 });
 
 // tests db connection
