@@ -157,6 +157,57 @@ app.get("/test", async (req, res) => {
     }
 });
 
+app.post("/api/v1/userprecictions", async (req, res) => {
+    // basic prerequisites
+    let db;
+    const { name, passwd, rd, predictions } = req.body;
+
+    // if name and password found in the database then add the predictions in database -> users collection
+    if (!name || !passwd || !rd || !predictions) {
+        return res.status(400).send("All fields are required");
+    }
+    try {
+        db = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+        const dbo = db.db("f1mongo"); // Database name
+
+        const result = await dbo.collection("users").find({ name: name, passwd: passwd }).toArray();
+        if (result.length === 0) {
+            return res.status(401).send("Unauthorized");
+        }
+    } catch (err) {
+        console.error("Error", err);
+        res.status(500).send("Internal server error");
+    } finally {
+        if (db) {
+            await db.close();
+        }
+    }
+
+    // if the user is authorized, add the predictions to the database -> predictions collection
+    try {
+        db = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+        const dbo = db.db("f1mongo"); // Database name
+
+        const query = { name: name, rd: rd }; // Query to find the document to update
+        const update = { $set: { name: name, rd: rd, predictions: predictions } }; // Update command
+        const options = { upsert: true }; // Option to insert if document doesn't exist
+
+        const result = await dbo.collection("predictions").updateOne(query, update, options);
+
+        if (result.upsertedCount > 0) {
+            return res.status(200).send("Predictions added");
+        } else if (result.modifiedCount > 0) {
+            return res.status(200).send("Predictions updated");
+        }
+    } catch (err) {
+        console.error("Error", err);
+        res.status(500).send("Internal server error");
+    } finally {
+        if (db) {
+            await db.close();
+        }
+    }
+});
 // sample hello world route
 app.get("/", (req, res) => {
     res.send("Hello World");

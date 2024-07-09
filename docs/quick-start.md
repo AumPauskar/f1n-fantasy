@@ -71,7 +71,7 @@
         ```
     - Expected output: User created
     - Unsuccessful output: 
-    - Example: `http://localhost:5000/api/v1/getusers`
+    - Example: `http://localhost:5000/api/v1/createusers`
 3. Getting all users
     - Route: `/api/v1/getusers`
     - Method: `GET`
@@ -110,3 +110,19 @@
     - Expected: `added`
     - Unsuccessful output: Internal server error (500), unauthorized (401), round already exists (409)
     - Example: `http://localhost:5000/api/v1/addraceresult`
+
+5. User predictions
+    - Route: `/api/v1/userpredictions`
+    - Method: `POST`
+    - Body: json
+        ```json
+        {
+            "name": "root",
+            "passwd": "root",
+            "rd": 10,
+            "predictions": [63, 81, 55, 44, 1, 27, 11, 20, 3, 10]
+        }
+        ```
+    - Expected output: `Predictions added`
+    - Unsuccessful output: Internal server error (500), unauthorized (401), round already exists (409)
+    - Example: `http://localhost:5000/api/v1/userpredictions`
