@@ -28,15 +28,13 @@ app.post("/api/v1/createusers", async (req, res) => {
         const client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
         db = client.db("f1mongo"); // Database name
         const query = { name: name }; // Query to find the document to update
-        const update = { $set: { name: name, passwd: passwd } }; // Update command
+        const update = { $setOnInsert: { name: name, passwd: passwd } }; // Update command
         const options = { upsert: true }; // Option to insert if document doesn't exist
 
         const result = await db.collection("users").updateOne(query, update, options);
 
         if (result.upsertedCount > 0) {
             return res.status(200).send("User created");
-        } else if (result.modifiedCount > 0) {
-            return res.status(200).send("User updated");
         } else {
             return res.status(200).send("No changes made to the user");
         }
