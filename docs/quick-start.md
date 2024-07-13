@@ -51,6 +51,11 @@
     ```bash
     sudo docker exec -it f1mongo mongosh
     ```
+10. (Optional) If you want to run the backend program via docker
+    ```bash
+    sudo docker build -t f1n-backend .
+    sudo docker run -p 5000:5000 f1n-backend
+    ```
 
 ## Testing API routes
 1. Database connection testing
@@ -110,7 +115,6 @@
     - Expected: `added`
     - Unsuccessful output: Internal server error (500), unauthorized (401), round already exists (409)
     - Example: `http://localhost:5000/api/v1/addraceresult`
-
 5. User predictions
     - Route: `/api/v1/userpredictions`
     - Method: `POST`
