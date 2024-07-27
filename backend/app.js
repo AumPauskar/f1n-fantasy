@@ -208,6 +208,17 @@ app.post("/api/v1/userprecictions", async (req, res) => {
         }
     }
 });
+
+app.post("api/vi/validatepredictions", async (req, res) => {
+    let db;
+    const { name, passwd, rd } = req.body;
+
+    if (!name || !passwd || !rd) {
+        return res.status(400).send("All fields are required");
+    }
+
+});
+
 // sample hello world route
 app.get("/", (req, res) => {
     res.send("Hello World");
