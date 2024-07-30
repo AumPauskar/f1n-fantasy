@@ -1,0 +1,26 @@
+### tests base server
+GET http://localhost:5000/
+
+### tests mongodb connection
+GET http://localhost:5000/test/
+
+### creates base user
+POST http://localhost:5000/api/v1/createusers/
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "passwd": "123"
+}
+
+### shows list of all users
+GET http://localhost:5000/api/v1/getusers/
+Content-Type: application/json
+
+{
+    "name": "root",
+    "passwd": "root"
+}
+
+### shows all race results
+GET http://localhost:5000/api/v1/checkallraceresults
