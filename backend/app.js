@@ -3,7 +3,7 @@ import { PORT } from "./config.js";
 
 // mongodb connection
 import { MongoClient } from 'mongodb';
-const url = "mongodb://localhost:27017/"; // Replace with your MongoDB connection string
+const url = "mongodb://mongodb:27017/"; // Replace with your MongoDB connection string
 
 const app = express();
 app.use(express.json());
