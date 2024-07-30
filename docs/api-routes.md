@@ -88,3 +88,7 @@ These API routes can be tested via a REST client like Postman or Insomnia. The r
     - Unsuccessful output: Internal server error (500), unauthorized (401), round already exists (409)
     - Additional notes: 
     - Example: `http://localhost:5000/api/v1/validatepredictions`
+7. Getting all race results
+    - Route: `/api/v1/checkallraceresults`
+    - Method: `GET`
+    - Expected output: List of all
