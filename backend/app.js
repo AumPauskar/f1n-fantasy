@@ -219,7 +219,27 @@ app.post("api/vi/validatepredictions", async (req, res) => {
 
 });
 
+app.get("/api/v1/checkallraceresults", async (req, res) => {
+    console.log("GET /api/v1/checkallraceresults called");
+    let db;
+    try {
+        db = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+        const dbo = db.db("f1mongo"); // Database name
+
+        const result = await dbo.collection("results").find().toArray();
+        res.status(200).send(result);
+    } catch (err) {
+        console.error("Error", err);
+        res.status(500).send("Internal server error");
+    } finally {
+        if (db) {
+            await db.close();
+        }
+    }
+});
+
 // sample hello world route
 app.get("/", (req, res) => {
+    console.log("GET / called");
     res.send("Hello World");
 });
