@@ -24,3 +24,34 @@ Content-Type: application/json
 
 ### shows all race results
 GET http://localhost:5000/api/v1/checkallraceresults
+
+### push user predictions
+POST http://localhost:5000/api/v1/userprecictions
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "passwd": "123",
+    "rd": "10",
+    "predictions": "[1, 4, 16, 81, 55, 44, 63, 11, 18, 22]"
+}
+
+### shows user predictions
+GET http://localhost:5000/api/v1/userpredictions
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "passwd": "123",
+    "rd": "10"
+}
+
+### shows user predictions
+GET http://localhost:5000/api/v1/validatepredictions
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "passwd": "123",
+    "rd": "10"
+}
