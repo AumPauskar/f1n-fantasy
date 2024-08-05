@@ -81,8 +81,8 @@ app.get("/api/v1/getusers", async (req, res) => {
 // adds race results to the database
 app.post("/api/v1/addraceresults", async (req, res) => {
 
-    const { name, passwd, rd, results, dnf } = req.body;
-    if (!name || !passwd || !rd || !results) {
+    const { name, passwd, rd, finishers, dnf } = req.body;
+    if (!name || !passwd || !rd || !finishers) {
         return res.status(400).send("All fields are required");
     }
     if (name !== "root" || passwd !== "root") {
@@ -114,7 +114,7 @@ app.post("/api/v1/addraceresults", async (req, res) => {
         const dbo = db.db("f1mongo"); // Database name
 
         const query = { rd: rd }; // Query to find the document to update
-        const update = { $set: { rd: rd, results: results, dnf: dnf } }; // Update command
+        const update = { $set: { rd: rd, finishers: finishers, dnf: dnf } }; // Update command
         const options = { upsert: true }; // Option to insert if document doesn't exist
 
         const result = await dbo.collection("results").updateOne(query, update, options);
@@ -123,7 +123,7 @@ app.post("/api/v1/addraceresults", async (req, res) => {
             console.log("name", name);
             console.log("passwd", passwd);
             console.log("rd", rd);
-            console.log("results", results);
+            console.log("finishers", finishers);
             console.log("dnf", dnf);
             return res.status(200).send("Results added");
         } else if (result.modifiedCount > 0) {
@@ -257,24 +257,25 @@ const { name, passwd, rd } = req.body;
 
 
 app.get("/api/v1/validatepredictions", async (req, res) => {
-    
     let db;
-    const { name, passwd, rd } = req.body;
-    console.log("name", name);
-    console.log("passwd", passwd);
-    console.log("rd", rd);
+    const { authname, authpasswd, rd, name } = req.body;
 
-    if (!name || !passwd || !rd) {
-        return res.status(400).send("All fields are required");
+    console.log("authname", authname);
+    console.log("authpasswd", authpasswd);
+
+    // check if auth name and passwd are correct -> superuser root
+    if (authname !== "root" || authpasswd !== "root") {
+        return res.status(401).send("Unauthorized");
     }
 
+    // check if the user exists
     try {
         db = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
         const dbo = db.db("f1mongo"); // Database name
 
-        const result = await dbo.collection("users").find({ name: name, passwd: passwd }).toArray();
+        const result = await dbo.collection("users").find({ name: name }).toArray();
         if (result.length === 0) {
-            return res.status(401).send("Unauthorized");
+            return res.status(404).send("User not found");
         }
     } catch (err) {
         console.error("Error", err);
@@ -285,12 +286,13 @@ app.get("/api/v1/validatepredictions", async (req, res) => {
         }
     }
 
+    // check if the round exists
     try {
         db = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
         const dbo = db.db("f1mongo"); // Database name
 
         const result = await dbo.collection("results").find({ rd: rd }).toArray();
-        if (result.length === 0) {
+        if (result === undefined) {
             return res.status(404).send("Round not found");
         }
     } catch (err) {
@@ -302,14 +304,13 @@ app.get("/api/v1/validatepredictions", async (req, res) => {
         }
     }
 
+    // in a variable (f1Results) store the finishers of the round
+    let f1Results;
     try {
         db = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
         const dbo = db.db("f1mongo"); // Database name
 
-        const result = await dbo.collection("predictions").find({ name: name, rd: rd }).toArray();
-        if (result.length === 0) {
-            return res.status(404).send("Predictions not found");
-        }
+        f1Results = await dbo.collection("results").find({ rd: rd }).toArray();
     } catch (err) {
         console.error("Error", err);
         res.status(500).send("Internal server error");
@@ -319,31 +320,54 @@ app.get("/api/v1/validatepredictions", async (req, res) => {
         }
     }
 
+    // in a variable (f1Predictions) store the predictions of the user for the round
+    let f1Predictions;
+    try {
+        db = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+        const dbo = db.db("f1mongo"); // Database name
+
+        f1Predictions = await dbo.collection("predictions").find({ name: name, rd: rd }).toArray();
+    } catch (err) {
+        console.error("Error", err);
+        res.status(500).send("Internal server error");
+    } finally {
+        if (db) {
+            await db.close();
+        }
+    }
+
+    console.log("f1Results", f1Results);
+    console.log("f1Predictions", f1Predictions);
+    console.log("f1Results[0].finishers", f1Results[0].finishers);
+    console.log("f1Predictions[0].predictions", f1Predictions[0].predictions);
+
+    // calculate the points
+    // this can be done by comparing the elements of f1Results[0].finishers and f1Predictions[0].predictions
+    // if the element's position is same in both results and predictions, then point += 25
+    // if the element's position varies by 1 in both results and predictions, then point += 18 and so on
+
     let points = 0;
 
-    const results = result[0].results;
-    const predictions = result[0].predictions;
-
-    for (let i = 0; i < results.length; i++) {
-        if (results[i] === predictions[i]) {
+    for (let i = 0; i < f1Results[0].finishers.length; i++) {
+        if (f1Results[0].finishers[i] === f1Predictions[0].predictions[i]) {
             points += 25;
-        } else if (Math.abs(results.indexOf(predictions[i]) - i) === 1) {
+        } else if (Math.abs(f1Results[0].finishers.indexOf(f1Predictions[0].predictions[i]) - i) === 1) {
             points += 18;
-        } else if (Math.abs(results.indexOf(predictions[i]) - i) === 2) {
+        } else if (Math.abs(f1Results[0].finishers.indexOf(f1Predictions[0].predictions[i]) - i) === 2) {
             points += 15;
-        } else if (Math.abs(results.indexOf(predictions[i]) - i) === 3) {
+        } else if (Math.abs(f1Results[0].finishers.indexOf(f1Predictions[0].predictions[i]) - i) === 3) {
             points += 12;
-        } else if (Math.abs(results.indexOf(predictions[i]) - i) === 4) {
+        } else if (Math.abs(f1Results[0].finishers.indexOf(f1Predictions[0].predictions[i]) - i) === 4) {
             points += 10;
-        } else if (Math.abs(results.indexOf(predictions[i]) - i) === 5) {
+        } else if (Math.abs(f1Results[0].finishers.indexOf(f1Predictions[0].predictions[i]) - i) === 5) {
             points += 8;
-        } else if (Math.abs(results.indexOf(predictions[i]) - i) === 6) {
+        } else if (Math.abs(f1Results[0].finishers.indexOf(f1Predictions[0].predictions[i]) - i) === 6) {
             points += 6;
-        } else if (Math.abs(results.indexOf(predictions[i]) - i) === 7) {
+        } else if (Math.abs(f1Results[0].finishers.indexOf(f1Predictions[0].predictions[i]) - i) === 7) {
             points += 4;
-        } else if (Math.abs(results.indexOf(predictions[i]) - i) === 8) {
+        } else if (Math.abs(f1Results[0].finishers.indexOf(f1Predictions[0].predictions[i]) - i) === 8) {
             points += 2;
-        } else if (Math.abs(results.indexOf(predictions[i]) - i) === 9) {
+        } else if (Math.abs(f1Results[0].finishers.indexOf(f1Predictions[0].predictions[i]) - i) === 9) {
             points += 1;
         }
     }

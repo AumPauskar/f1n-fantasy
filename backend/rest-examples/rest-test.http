@@ -32,8 +32,8 @@ Content-Type: application/json
 {
     "name": "John Doe",
     "passwd": "123",
-    "rd": "10",
-    "predictions": "[1, 4, 16, 81, 55, 44, 63, 11, 18, 22]"
+    "rd": "16",
+    "predictions": [1, 4, 16, 81, 55, 44, 63, 11, 18, 22]
 }
 
 ### shows user predictions
@@ -43,7 +43,7 @@ Content-Type: application/json
 {
     "name": "John Doe",
     "passwd": "123",
-    "rd": "10"
+    "rd": "15"
 }
 
 ### shows user predictions
@@ -53,5 +53,16 @@ Content-Type: application/json
 {
     "name": "John Doe",
     "passwd": "123",
-    "rd": "10"
+    "rd": "15"
+}
+
+### shows user predictions new
+GET http://localhost:5000/api/v1/validatepredictions
+Content-Type: application/json
+
+{
+    "authname": "root",
+    "authpasswd": "root",
+    "rd": "16",
+    "name": "John Doe"
 }

@@ -5,8 +5,8 @@ Content-Type: application/json
 {
     "name": "root",
     "passwd": "root",
-    "rd": 1,
-    "results": [1, 11, 55, 16, 63, 4, 44, 81, 14, 18],
+    "rd": "16",
+    "finishers": [1, 11, 55, 16, 63, 4, 44, 81, 14, 18],
     "dnf": []
 }
 
@@ -17,8 +17,8 @@ Content-Type: application/json
 {
     "name": "root",
     "passwd": "root",
-    "rd": 2,
-    "results": [1, 11, 16, 81, 14, 63, 38, 4, 44, 27],
+    "rd": "2",
+    "finishers": [1, 11, 16, 81, 14, 63, 38, 4, 44, 27],
     "dnf": []
 }
 
@@ -29,8 +29,8 @@ Content-Type: application/json
 {
     "name": "root",
     "passwd": "root",
-    "rd": 3,
-    "results": [55, 16, 4, 81, 11, 18, 22, 14, 27, 20],
+    "rd": "3",
+    "finishers": [55, 16, 4, 81, 11, 18, 22, 14, 27, 20],
     "dnf": []
 }
 
@@ -41,8 +41,8 @@ Content-Type: application/json
 {
     "name": "root",
     "passwd": "root",
-    "rd": 4,
-    "results": [1, 11, 55, 16, 4, 14, 63, 81, 44, 22],
+    "rd": "4",
+    "finishers": [1, 11, 55, 16, 4, 14, 63, 81, 44, 22],
     "dnf": []
 }
 
@@ -53,8 +53,8 @@ Content-Type: application/json
 {
     "name": "root",
     "passwd": "root",
-    "rd": 5,
-    "results": [1, 4, 11, 16, 55, 63, 14, 81, 44, 27],
+    "rd": "5",
+    "finishers": [1, 4, 11, 16, 55, 63, 14, 81, 44, 27],
     "dnf": []
 }
 
@@ -65,8 +65,8 @@ Content-Type: application/json
 {
     "name": "root",
     "passwd": "root",
-    "rd": 6,
-    "results": [4, 1, 11, 16, 55, 44, 22, 63, 14, 31],
+    "rd": "6",
+    "finishers": [4, 1, 11, 16, 55, 44, 22, 63, 14, 31],
     "dnf": []
 }
 
@@ -77,8 +77,8 @@ Content-Type: application/json
 {
     "name": "root",
     "passwd": "root",
-    "rd": 7,
-    "results": [1, 4, 16, 81, 55, 44, 63, 11, 18, 22],
+    "rd": "7",
+    "finishers": [1, 4, 16, 81, 55, 44, 63, 11, 18, 22],
     "dnf": []
 }
 
@@ -89,8 +89,8 @@ Content-Type: application/json
 {
     "name": "root",
     "passwd": "root",
-    "rd": 8,
-    "results": [16, 81, 55, 4, 63, 1, 44, 22, 23, 10],
+    "rd": "8",
+    "finishers": [16, 81, 55, 4, 63, 1, 44, 22, 23, 10],
     "dnf": []
 }
 
@@ -101,8 +101,8 @@ Content-Type: application/json
 {
     "name": "root",
     "passwd": "root",
-    "rd": 9,
-    "results": [1, 4, 63, 44, 81, 14, 18, 3, 10, 31],
+    "rd": "9",
+    "finishers": [1, 4, 63, 44, 81, 14, 18, 3, 10, 31],
     "dnf": []
 }
 
@@ -113,8 +113,8 @@ Content-Type: application/json
 {
     "name": "root",
     "passwd": "root",
-    "rd": 10,
-    "results": [1, 4, 44, 63, 16, 55, 81, 11, 10, 31],
+    "rd": "10",
+    "finishers": [1, 4, 44, 63, 16, 55, 81, 11, 10, 31],
     "dnf": []
 }
 ### round 11
@@ -124,8 +124,8 @@ Content-Type: application/json
 {
     "name": "root",
     "passwd": "root",
-    "rd": 11,
-    "results": [63, 81, 55, 44, 1, 27, 11, 20, 3, 10],
+    "rd": "11",
+    "finishers": [63, 81, 55, 44, 1, 27, 11, 20, 3, 10],
     "dnf": []
 }
 
@@ -136,8 +136,8 @@ Content-Type: application/json
 {
     "name": "root",
     "passwd": "root",
-    "rd": 12,
-    "results": [44, 1, 4, 81, 55, 27, 18, 14, 23, 22],
+    "rd": "12",
+    "finishers": [44, 1, 4, 81, 55, 27, 18, 14, 23, 22],
     "dnf": []
 }
 
@@ -148,8 +148,8 @@ Content-Type: application/json
 {
     "name": "root",
     "passwd": "root",
-    "rd": 13,
-    "results": [81, 4, 44, 16, 1, 55, 11, 63, 22, 18],
+    "rd": "13",
+    "finishers": [81, 4, 44, 16, 1, 55, 11, 63, 22, 18],
     "dnf": []
 }
 
@@ -160,7 +160,7 @@ Content-Type: application/json
 {
     "name": "root",
     "passwd": "root",
-    "rd": 14,
-    "results": [44, 81, 16, 1, 4, 55, 11, 14, 31, 3],
+    "rd": "14",
+    "finishers": [44, 81, 16, 1, 4, 55, 11, 14, 31, 3],
     "dnf": []
 }
