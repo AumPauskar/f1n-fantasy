@@ -56,3 +56,10 @@
     sudo docker build -t f1n-backend .
     sudo docker run -p 5000:5000 f1n-backend
     ```
+
+## Extra commands 
+1. Purge f1mongo container
+    ```bash
+    sudo docker stop f1mongo
+    sudo docker rm f1mongo
+    ```

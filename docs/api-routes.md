@@ -91,4 +91,41 @@ These API routes can be tested via a REST client like Postman or Insomnia. The r
 7. Getting all race results
     - Route: `/api/v1/checkallraceresults`
     - Method: `GET`
-    - Expected output: List of all
+    - Expected output: List of all results arranged with rounds
+8. Updating user predictions
+    - Route: `/api/v1/updatepredictions`
+    - Method: `POST`
+    - Body: json
+        ```json
+        {
+            "name": "root",
+            "passwd": "root",
+            "rd": 10,
+            "predictions": [1, 4, 16, 81, 55, 44, 63, 11, 18, 22]
+        }
+        ```
+    - Expected output: `Predictions updated`
+    - Unsuccessful output: Internal server error (500), unauthorized (401), round already exists (409)
+    - Example: `http://localhost:5000/api/v1/updatepredictions`
+9. Getting user predictions
+    - Route: `/api/v1/userpredictions`
+    - Method: `GET`
+    - Body: json
+        ```json
+        {
+            "name": "John Doe",
+            "passwd": "123",
+            "rd": "10"
+        }
+        ```
+10. Validate predictions and give points (under progress)
+    - Route: `/api/v1/validatepredictions`
+    - Method: `GET`
+    - Body: json
+        ```json
+        {
+            "name": "John Doe",
+            "passwd": "123",
+            "rd": "10"
+        }
+        ```
