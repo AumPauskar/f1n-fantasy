@@ -1,10 +1,15 @@
 import express from "express";
 import { PORT } from "./config.js";
-
-// mongodb connection
 import { MongoClient } from 'mongodb';
-const url = "mongodb://mongodb:27017/"; // Replace with your MongoDB connection string
 
+// Default MongoDB connection string
+let url = process.env.MONGO_URL;
+// Check if the environment variable MONGO_URL is set
+if (url === undefined) {
+    url = "mongodb://localhost:27017/";
+}
+
+// Create a new express application
 const app = express();
 app.use(express.json());
 
