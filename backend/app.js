@@ -351,24 +351,34 @@ app.get("/api/v1/validatepredictions", async (req, res) => {
     for (let i = 0; i < f1Results[0].finishers.length; i++) {
         if (f1Results[0].finishers[i] === f1Predictions[0].predictions[i]) {
             points += 25;
-        } else if (Math.abs(f1Results[0].finishers.indexOf(f1Predictions[0].predictions[i]) - i) === 1) {
+            console.log("+25", f1Results[0].finishers[i], f1Predictions[0].predictions[i]);
+        } else if (Math.abs(f1Results[0].finishers) === 1) {
             points += 18;
-        } else if (Math.abs(f1Results[0].finishers.indexOf(f1Predictions[0].predictions[i]) - i) === 2) {
+            console.log("+18", f1Results[0].finishers[i], f1Predictions[0].predictions[i]);
+        } else if (Math.abs(f1Results[0].finishers.indexOf(f1Predictions.predictions[i]) - i) === 1) {
             points += 15;
+            console.log("+15", f1Results[0].finishers[i], f1Predictions[0].predictions[i]);
         } else if (Math.abs(f1Results[0].finishers.indexOf(f1Predictions[0].predictions[i]) - i) === 3) {
             points += 12;
+            console.log("+12", f1Results[0].finishers[i], f1Predictions[0].predictions[i]);
         } else if (Math.abs(f1Results[0].finishers.indexOf(f1Predictions[0].predictions[i]) - i) === 4) {
             points += 10;
+            console.log("+10", f1Results[0].finishers[i], f1Predictions[0].predictions[i]);
         } else if (Math.abs(f1Results[0].finishers.indexOf(f1Predictions[0].predictions[i]) - i) === 5) {
             points += 8;
+            console.log("+8", f1Results[0].finishers[i], f1Predictions[0].predictions[i]);
         } else if (Math.abs(f1Results[0].finishers.indexOf(f1Predictions[0].predictions[i]) - i) === 6) {
             points += 6;
+            console.log("+6", f1Results[0].finishers[i], f1Predictions[0].predictions[i]);
         } else if (Math.abs(f1Results[0].finishers.indexOf(f1Predictions[0].predictions[i]) - i) === 7) {
             points += 4;
+            console.log("+4", f1Results[0].finishers[i], f1Predictions[0].predictions[i]);
         } else if (Math.abs(f1Results[0].finishers.indexOf(f1Predictions[0].predictions[i]) - i) === 8) {
             points += 2;
+            console.log("+2", f1Results[0].finishers[i], f1Predictions[0].predictions[i]);
         } else if (Math.abs(f1Results[0].finishers.indexOf(f1Predictions[0].predictions[i]) - i) === 9) {
             points += 1;
+            console.log("+1", f1Results[0].finishers[i], f1Predictions[0].predictions[i]);
         }
     }
 

@@ -63,3 +63,7 @@
     sudo docker stop f1mongo
     sudo docker rm f1mongo
     ```
+2. Purge all volumes
+    ```bash
+    sudo docker system prune -af
+    ```
