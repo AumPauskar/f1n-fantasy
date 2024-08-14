@@ -26,7 +26,7 @@ Content-Type: application/json
 GET http://localhost:5000/api/v1/checkallraceresults
 
 ### push user predictions
-POST http://localhost:5000/api/v1/userprecictions
+POST http://localhost:5000/api/v1/userpredictions/
 Content-Type: application/json
 
 {
@@ -47,16 +47,6 @@ Content-Type: application/json
 }
 
 ### shows user predictions
-GET http://localhost:5000/api/v1/validatepredictions
-Content-Type: application/json
-
-{
-    "name": "John Doe",
-    "passwd": "123",
-    "rd": "1"
-}
-
-### shows user predictions new
 GET http://localhost:5000/api/v1/validatepredictions
 Content-Type: application/json
 
