@@ -22,6 +22,15 @@ Content-Type: application/json
     "passwd": "root"
 }
 
+### checks whether user exists
+GET http://localhost:5000/api/v1/checkuser/
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "passwd": "123"
+}
+
 ### shows all race results
 GET http://localhost:5000/api/v1/checkallraceresults
 

@@ -50,4 +50,27 @@ router.post("/createusers", async (req, res) => {
     }
 });
 
+// api route to check if the user exists
+router.get("/checkuser", async (req, res) => {
+    const { name, passwd } = req.body;
+    console.log("name", name);
+    console.log("passwd", passwd);
+
+    if (!name || !passwd) {
+        return res.status(400).send("Both 'name' and 'passwd' fields are required");
+    }
+
+    try {
+        const user = await User.findOne({ name, passwd });
+        if (user) {
+            return res.status(202).send("User exists");
+        } else {
+            return res.status(204).send("User does not exist");
+        }
+    } catch (err) {
+        console.error("Error checking user", err);
+        return res.status(500).send("Internal server error");
+    }
+});
+
 export default router;
