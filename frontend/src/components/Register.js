@@ -1,6 +1,7 @@
 // src/components/Register.js
 import React, { useState } from 'react';
 import axios from 'axios';
+import 'tailwindcss/tailwind.css';
 
 function Register() {
   const [formData, setFormData] = useState({ name: '', passwd: '' });
@@ -14,22 +15,45 @@ function Register() {
       const res = await axios.post('http://localhost:5000/api/v1/createusers', formData);
       console.log(res.data); // The JWT token
     } catch (err) {
-      console.error(err.response.data);
+      if (err.response && err.response.status === 400) {
+        alert('Invalid credentials');
+      } else {
+        console.error(err.response.data);
+      }
     }
   };
 
   return (
-    <form onSubmit={onSubmit}>
-      <div>
-        <label>Name:</label>
-        <input type="text" name="name" value={name} onChange={onChange} required />
-      </div>
-      <div>
-        <label>Password:</label>
-        <input type="password" name="passwd" value={passwd} onChange={onChange} required />
-      </div>
-      <button type="submit">Register</button>
-    </form>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <form onSubmit={onSubmit} className="bg-white p-6 rounded shadow-md w-full max-w-sm">
+        <h2 className="text-2xl font-bold mb-4 text-center">Register</h2>
+        <div className="mb-4">
+          <label className="block text-gray-700">Name:</label>
+          <input
+            type="text"
+            name="name"
+            value={name}
+            onChange={onChange}
+            required
+            className="w-full px-3 py-2 border rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700">Password:</label>
+          <input
+            type="password"
+            name="passwd"
+            value={passwd}
+            onChange={onChange}
+            required
+            className="w-full px-3 py-2 border rounded"
+          />
+        </div>
+        <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
+          Register
+        </button>
+      </form>
+    </div>
   );
 }
 
