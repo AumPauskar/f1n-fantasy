@@ -23,7 +23,7 @@ Content-Type: application/json
 }
 
 ### checks whether user exists
-GET http://localhost:5000/api/v1/checkuser/
+POST http://localhost:5000/api/v1/checkuser/
 Content-Type: application/json
 
 {

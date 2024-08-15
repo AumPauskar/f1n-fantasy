@@ -7,43 +7,34 @@ const router = express.Router();
 
 // Adds a new user to the database
 router.post("/createusers", async (req, res) => {
-    const { name, passwd } = req.body;
-    console.log("name", name);
-    console.log("passwd", passwd);
-  
-    if (!name || !passwd) {
-      return res.status(400).send("Both 'name' and 'passwd' fields are required");
+  const { name, passwd } = req.body;
+  try {
+    let user = await User.findOne({ name });
+    if (user) {
+      return res.status(400).json({ msg: 'User already exists' });
     }
-  
-    try {
-      // Check if the user already exists
-      const existingUser = await User.findOne({ name });
-      if (existingUser) {
-        return res.status(200).send("User already exists");
-      }
-  
-      // Create a new user
-      const newUser = new User({ name, passwd });
-      await newUser.save();
-      const payload = {
-        user: {
-          id: newUser.id,
-        },
-      };
-  
-      jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
-        if (err) throw err;
-        res.json({ token });
-      });
-      return res.status(200).send("User created");
-    } catch (err) {
-      console.error("Error creating user", err);
-      return res.status(500).send("Internal server error");
-    }
+
+    user = new User({ name, passwd });
+    await user.save();
+
+    const payload = {
+      user: {
+        id: user.id,
+      },
+    };
+
+    jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
+      if (err) throw err;
+      res.json({ token });
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
 });
   
-  // Returns all users in the database
-  router.get("/getusers", async (req, res) => {
+// Returns all users in the database
+router.get("/getusers", async (req, res) => {
     const { name, passwd } = req.body;
     console.log("rootuname", name);
     console.log("rootupasswd", passwd);
@@ -61,27 +52,34 @@ router.post("/createusers", async (req, res) => {
     }
 });
 
-// api route to check if the user exists
-router.get("/checkuser", async (req, res) => {
-    const { name, passwd } = req.body;
-    console.log("name", name);
-    console.log("passwd", passwd);
-
-    if (!name || !passwd) {
-        return res.status(400).send("Both 'name' and 'passwd' fields are required");
+// API route to check if the user exists
+router.post("/checkuser", async (req, res) => { // Changed to POST for security
+  const { name, passwd } = req.body;
+  try {
+    const user = await User.findOne({ name });
+    if (!user) {
+      return res.status(400).json({ msg: 'Invalid credentials' });
     }
 
-    try {
-        const user = await User.findOne({ name, passwd });
-        if (user) {
-            return res.status(202).send("User exists");
-        } else {
-            return res.status(204).send("User does not exist");
-        }
-    } catch (err) {
-        console.error("Error checking user", err);
-        return res.status(500).send("Internal server error");
+    const isMatch = await bcrypt.compare(passwd, user.passwd);
+    if (!isMatch) {
+      return res.status(400).json({ msg: 'Invalid credentials' });
     }
+
+    const payload = {
+      user: {
+        id: user.id,
+      },
+    };
+
+    jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
+      if (err) throw err;
+      res.json({ token });
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
 });
 
 export default router;
