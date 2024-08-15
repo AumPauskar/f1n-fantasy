@@ -2,6 +2,9 @@ import express from "express";
 import mongoose from "mongoose";
 import { PORT } from "./config.js";
 import routes from "./routes/index.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 // Default MongoDB connection string
 let url = process.env.MONGO_URL || "mongodb://localhost:27017/f1mongo"; // Include the database name in the URL

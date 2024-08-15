@@ -1,4 +1,6 @@
 import express from "express";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 import User from "../models/userModel.js";
 
 const router = express.Router();
@@ -23,7 +25,16 @@ router.post("/createusers", async (req, res) => {
       // Create a new user
       const newUser = new User({ name, passwd });
       await newUser.save();
+      const payload = {
+        user: {
+          id: newUser.id,
+        },
+      };
   
+      jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
+        if (err) throw err;
+        res.json({ token });
+      });
       return res.status(200).send("User created");
     } catch (err) {
       console.error("Error creating user", err);
