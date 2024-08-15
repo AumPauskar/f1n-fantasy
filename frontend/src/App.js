@@ -1,14 +1,22 @@
-import React from 'react'
-import Login from './components/login'
+// src/App.js
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Register from './components/Register';
+import Login from './components/Login';
+import Dashboard from './components/Dashboard';
+import Home from './components/Home'; // Import Home component
 
-const App = () => {
+function App() {
   return (
-    <div className='bg-red-400 text-white'>
-      App
-    <Login />     
-    </div>
-    
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} /> {/* Add Home route */}
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;

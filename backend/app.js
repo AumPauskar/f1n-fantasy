@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { PORT } from "./config.js";
 import routes from "./routes/index.js";
 import dotenv from "dotenv";
+import cors from "cors";
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ mongoose.connect(url)
 
 // Create a new express application
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 // Use the combined routes
