@@ -2,6 +2,7 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import User from "../models/userModel.js";
+import auth from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -74,12 +75,16 @@ router.post("/checkuser", async (req, res) => { // Changed to POST for security
 
     jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
       if (err) throw err;
-      res.json({ token });
+      res.status(200).json({auth: true, token:token });
     });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
   }
+});
+
+router.get('/isUserAuth', auth, (req, res) => {
+  res.status(200).json({ msg: "Authenticated" });
 });
 
 export default router;

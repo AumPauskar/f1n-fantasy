@@ -31,6 +31,12 @@ Content-Type: application/json
     "passwd": "123"
 }
 
+### Get user information
+### Check if user is authenticated -> replace x-auth-token with the token received from the checkuser request
+GET http://localhost:5000/api/v1/isUserAuth/
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjZjNjMzMGJjMDJjYTc1Y2I0YzdlZmI0In0sImlhdCI6MTcyNDI2NjAxOSwiZXhwIjoxNzI0MjY5NjE5fQ.H3qcJx1VhEKPIO-b-eMHeZWW2gDEOq5u2Wh4cV9WR70
+
+
 ### shows all race results
 GET http://localhost:5000/api/v1/checkallraceresults
 
