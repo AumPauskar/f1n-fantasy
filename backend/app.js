@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-import { PORT } from "./config.js";
+// import { PORT } from "./config.js";
 import routes from "./routes/index.js";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -24,6 +24,6 @@ app.use(express.json());
 app.use(routes);
 
 // Returns the server status
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on port ${process.env.PORT}`);
 });

@@ -5,7 +5,9 @@ FROM node:20
 WORKDIR /app
 
 # Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
+# COPY package*.json ./
+
+COPY ../package*.json ./
 
 # Install the dependencies
 RUN npm install
@@ -14,7 +16,7 @@ RUN npm install
 COPY . .
 
 # Expose the port on which the Node.js application will run
-EXPOSE 3000
+EXPOSE 5000
 
 # Start the Node.js application
 CMD ["npm", "start"]

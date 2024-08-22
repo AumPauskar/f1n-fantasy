@@ -12,7 +12,7 @@ services:
 
   app:
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
     container_name: nodejs-app
     restart: always
@@ -23,7 +23,16 @@ services:
     depends_on:
       - mongodb
     volumes:
-      - .:/app
+      - ./backend:/app
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: react-app
+    restart: always
+    ports:
+      - "3000:3000"
 
 volumes:
   mongo-data:
