@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function SignupPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSignup = async () => {
     const response = await fetch("http://localhost:5000/api/v1/createusers/", {
@@ -15,9 +17,11 @@ function SignupPage() {
 
     if (response.ok) {
       const data = await response.json();
-      console.log("Signup successful:", data);
+      localStorage.setItem("token", data.token); // Store the JWT token
+      alert("Signup successful!");
+      navigate("/dashboard"); // Automatically navigate to Dashboard
     } else {
-      console.error("Signup failed");
+      alert("Signup failed. Please try again.");
     }
   };
 
