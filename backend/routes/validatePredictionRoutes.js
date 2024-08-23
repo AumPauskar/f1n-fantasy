@@ -2,18 +2,24 @@ import express from 'express';
 import Prediction from '../models/predictionModel.js';
 import RaceResult from '../models/raceResultModel.js';
 import User from '../models/userModel.js';
+import Points from '../models/pointsModel.js';
+import mongoose from 'mongoose';
 
 const router = express.Router();
 
-router.get('/validatepredictions', async (req, res) => {
-  const { authname, authpasswd, rd, name } = req.body;
+router.post('/validatepredictions', async (req, res) => {
+  const { authname, authpasswd, rd, id } = req.body;
 
   if (authname !== "root" || authpasswd !== "root") {
     return res.status(401).send("Unauthorized");
   }
 
   try {
-    const user = await User.findOne({ name });
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).send("Invalid ID format");
+    }
+
+    const user = await User.findById(new mongoose.Types.ObjectId(id));
     if (!user) {
       return res.status(404).send("User not found");
     }
@@ -24,7 +30,7 @@ router.get('/validatepredictions', async (req, res) => {
     }
 
     const f1Results = raceResult.finishers;
-    const userPrediction = await Prediction.findOne({ name, rd });
+    const userPrediction = await Prediction.findOne({ id, rd });
     if (!userPrediction) {
       return res.status(404).send("Predictions not found");
     }

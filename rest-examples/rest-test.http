@@ -76,14 +76,14 @@ Content-Type: application/json
 }
 
 ### shows user predictions
-GET http://localhost:5000/api/v1/validatepredictions
+POST http://localhost:5000/api/v1/validatepredictions
 Content-Type: application/json
 
 {
     "authname": "root",
     "authpasswd": "root",
-    "rd": "1",
-    "name": "John Doe"
+    "rd": "12",
+    "id": "66c81a95f0fd89daa7c4f977"
 }
 
 ### removes the user
