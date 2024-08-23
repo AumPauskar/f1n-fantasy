@@ -4,6 +4,7 @@ import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
 import Dashboard from "./Dashboard";
 import { Navigate } from "react-router-dom";
+import PredictionForm from "./PredictionForm";
 
 function PrivateRoute({ children }) {
   const token = localStorage.getItem("token");
@@ -24,6 +25,7 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route path="/predictions" element={<PredictionForm />} />
       </Routes>
     </Router>
   );

@@ -34,7 +34,7 @@ Content-Type: application/json
 ### Get user information
 ### Check if user is authenticated -> replace x-auth-token with the token received from the checkuser request
 GET http://localhost:5000/api/v1/isUserAuth/
-x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjZjNjMzMGJjMDJjYTc1Y2I0YzdlZmI0In0sImlhdCI6MTcyNDI2NjAxOSwiZXhwIjoxNzI0MjY5NjE5fQ.H3qcJx1VhEKPIO-b-eMHeZWW2gDEOq5u2Wh4cV9WR70
+x-auth-token: <valid x-auth-token generated from login/signup>
 
 
 ### shows all race results
@@ -51,6 +51,12 @@ Content-Type: application/json
     "predictions": [1, 11, 55, 16, 4, 14, 63, 81, 44, 22]
 }
 
+### new user predictions
+POST http://localhost:5000/api/v1/userpredictions/<userid>
+Content-Type: application/json
+
+{ "predictions": [1, 11, 55, 16, 4, 14, 63, 81, 44, 22] }
+
 ### shows user predictions
 GET http://localhost:5000/api/v1/userpredictions
 Content-Type: application/json
@@ -58,6 +64,14 @@ Content-Type: application/json
 {
     "name": "John Doe",
     "passwd": "123",
+    "rd": "1"
+}
+
+### shows user predictions new
+GET http://localhost:5000/api/v1/userpredictions/<userid>
+Content-Type: application/json
+
+{
     "rd": "1"
 }
 
@@ -70,4 +84,13 @@ Content-Type: application/json
     "authpasswd": "root",
     "rd": "1",
     "name": "John Doe"
+}
+
+### removes the user
+DELETE  http://localhost:5000/api/v1/deleteuser/
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "passwd": "123"
 }

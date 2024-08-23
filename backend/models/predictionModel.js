@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const predictionSchema = new mongoose.Schema({
-  name: {
+  id: {
     type: String,
     required: true
   },

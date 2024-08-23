@@ -26,7 +26,7 @@ router.post("/createusers", async (req, res) => {
 
     jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
       if (err) throw err;
-      res.json({ token });
+      res.json({id:user._id, name:user.name, token: token });
     });
   } catch (err) {
     console.error(err.message);
@@ -45,7 +45,7 @@ router.get("/getusers", async (req, res) => {
     }
   
     try {
-      const users = await User.find({}, { _id: 0, name: 1, passwd: 1 }).exec();
+      const users = await User.find({}, { _id: 1, name: 1, passwd: 1 }).exec();
       res.send(users);
     } catch (err) {
       console.error("Error retrieving users", err);
@@ -75,8 +75,30 @@ router.post("/checkuser", async (req, res) => { // Changed to POST for security
 
     jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
       if (err) throw err;
-      res.status(200).json({auth: true, token:token });
+      res.status(200).json({id:user._id, name:user.name, token:token });
     });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+// API route to delete a user
+router.delete("/deleteuser", async (req, res) => {
+  const { name, passwd } = req.body;
+  try {
+    const user = await User.findOne({ name });
+    if (!user) {
+      return res.status(400).json({ msg: 'User does not exist' });
+    }
+
+    const isMatch = await bcrypt.compare(passwd, user.passwd);
+    if (!isMatch) {
+      return res.status(400).json({ msg: 'Invalid credentials' });
+    }
+
+    await User.findOneAndDelete({ name });
+    res.status(200).json({ msg: 'User deleted' });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');

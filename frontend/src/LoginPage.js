@@ -18,6 +18,7 @@ function LoginPage() {
     if (response.ok) {
       const data = await response.json();
       localStorage.setItem("token", data.token); // Store the JWT token
+      localStorage.setItem("userId", data.id); // Store the userId
       alert("Login successful!");
       navigate("/dashboard"); // Automatically navigate to Dashboard
     } else {
