@@ -123,4 +123,14 @@ async function updatePointsDB(authname, authpasswd, rd, id) {
   return 200;
 }
 
+// route to get points for a user in points collection
+router.get('/getpoints/:id', async (req, res) => {
+  const id = req.params.id;
+  const points = await Points.findOne({ id: id });
+  if (!points) {
+    return res.status(404).send("Points not found");
+  }
+  res.send(points);
+});
+
 export default router;

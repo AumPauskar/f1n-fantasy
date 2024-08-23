@@ -97,3 +97,6 @@ Content-Type: application/json
 
 ### check current round
 GET http://localhost:5000/getCurrentRound
+
+### gets users points
+GET http://localhost:5000/api/v1/getpoints/66c84f36be25f123857dc4a6
