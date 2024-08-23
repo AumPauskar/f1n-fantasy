@@ -50,7 +50,7 @@ router.get('/userpredictions/:id', async (req, res) => {
       return res.status(401).send("Unauthorized");
     }
 
-    const result = await Prediction.find({ userId: id, round: rd });
+    const result = await Prediction.find({ id: id, rd: rd });
     res.send(result);
   } catch (err) {
     console.error("Error", err);
