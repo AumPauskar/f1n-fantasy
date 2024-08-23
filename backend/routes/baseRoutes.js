@@ -25,4 +25,13 @@ router.get("/test", async (req, res) => {
     }
 });
 
+router.get("/getCurrentRound", async (req, res) => {
+    return res.status(200).json( {
+        currentRound: process.env.CURRENT_ROUND,
+        currentRoundStartDate: process.env.CURRENT_ROUND_START_DATE,
+        currentRoundEndDate: process.env.CURRENT_ROUND_END_DATE,
+        currentRoundDescription: process.env.CURRENT_ROUND_DESCRIPTION
+    });
+});
+
 export default router;

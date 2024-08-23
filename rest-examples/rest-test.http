@@ -94,3 +94,6 @@ Content-Type: application/json
     "name": "John Doe",
     "passwd": "123"
 }
+
+### check current round
+GET http://localhost:5000/getCurrentRound
