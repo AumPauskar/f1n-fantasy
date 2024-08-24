@@ -18,6 +18,8 @@ function SignupPage() {
     if (response.ok) {
       const data = await response.json();
       localStorage.setItem("token", data.token); // Store the JWT token
+      localStorage.setItem("userId", data.id); // Store the userId
+      localStorage.setItem("username", username); // Store the username
       alert("Signup successful!");
       navigate("/dashboard"); // Automatically navigate to Dashboard
     } else {
