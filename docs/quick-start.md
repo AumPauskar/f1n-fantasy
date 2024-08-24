@@ -32,7 +32,7 @@
     ```
     Output should be similar to
     ```bash
-    $ sudo docker -v
+    sudo docker -v
     Docker version 27.0.3, build 7d4bcd8
     ```
 6. Pull mondoDB image from docker hub
