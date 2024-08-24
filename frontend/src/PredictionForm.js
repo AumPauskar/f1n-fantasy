@@ -3,7 +3,7 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import classNames from 'classnames';
 
-const images = [
+const initialImages = [
   { id: 1, src: '/images/ver.png', value: 1 },
   { id: 2, src: '/images/per.png', value: 11 },
   { id: 3, src: '/images/nor.png', value: 4 },
@@ -24,7 +24,6 @@ const images = [
   { id: 18, src: '/images/sar.png', value: 2 },
   { id: 19, src: '/images/bot.png', value: 77 },
   { id: 20, src: '/images/zho.png', value: 24 }
-  // Add more images with their values
 ];
 
 const Slot = ({ id, onDrop, image }) => {
@@ -77,6 +76,7 @@ const DraggableImage = ({ image }) => {
         width: '100px',
         height: '100px',
         opacity: isDragging ? 0.5 : 1,
+        cursor: 'move',
       }}
     />
   );
@@ -84,6 +84,7 @@ const DraggableImage = ({ image }) => {
 
 const PredictionForm = () => {
   const [slots, setSlots] = useState(Array(10).fill(null));
+  const [images, setImages] = useState(initialImages);
   const [userId, setUserId] = useState('');
 
   useEffect(() => {
@@ -97,6 +98,9 @@ const PredictionForm = () => {
     const newSlots = [...slots];
     newSlots[slotId] = item;
     setSlots(newSlots);
+
+    // Remove the image from the available images list
+    setImages(images.filter(image => image.id !== item.id));
   };
 
   const handleSubmit = async () => {
